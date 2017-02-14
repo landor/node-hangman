@@ -1,0 +1,11 @@
+{
+  "name": "hangman",
+  "version": "1.0.1",
+  "author": "landor@aught.org",
+  "devDependencies": {},
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.14.1",
+    "mongoose": "^4.8.2"
+  }
+}

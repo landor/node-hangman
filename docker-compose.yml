@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+
+  node-server:
+    build: ./node-server
+    ports:
+      - '3000:3000'
+    links:
+      - mongo
+    volumes:
+      - ./node-server:/app
+    command: nodemon --debug=5858
+
+  mongo:
+    image: mongo
+    ports:
+      - '27017:21017'
+    volumes:
+      - ./docker-runtime/mongo:/data/db
