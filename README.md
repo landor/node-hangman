@@ -2,8 +2,10 @@
 hangman game web-app created with node, mongo, and vue
 
 ## to run
-First, make sure you have docker-compose set up and working.
-See https://docs.docker.com/compose/install/
+Make sure you have these set up and working:
+ - git ( https://git-scm.com/downloads )
+ - docker-compose ( https://docs.docker.com/compose/install/ )
+ - nodejs / npm ( https://nodejs.org/en/download/ )
 ```
 git clone https://github.com/landor/node-hangman
 cd node-hangman
