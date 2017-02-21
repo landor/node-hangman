@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 
 var max_wrong_guesses = 10;
 
-/* DB */
+
+/* DB, schema, model */
 
 mongoose.connect('mongodb://mongo:27017');
 var db = mongoose.connection;
@@ -147,6 +148,7 @@ gameSchema.methods.fillWordWithGuesses = function() {
 }
 var GameModel = mongoose.model('Game', gameSchema);
 
+
 /* ROUTES */
 
 app.post('/get-auth-token', function(req, res, next) {
@@ -181,16 +183,13 @@ app.post('/get-auth-token', function(req, res, next) {
 });
 
 app.post('/play-game', function(req, res, next) {
-  // play the game!
-  
   // find game (validate auth)
-  GameModel.findOne({ auth_token: req.get('auth_token') }, function (err, doc) {
-    if (! doc) {
+  GameModel.findOne({ auth_token: req.get('auth_token') }, function (err, game) {
+    if (! game) {
       // auth token doesn't match a game
       res.json({ error: 'no game' });
       return;
     }
-    game = doc;
   
     // perform game operation / mutate game
     switch(req.body.op) {

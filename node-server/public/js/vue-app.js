@@ -1,4 +1,3 @@
-// main app container
 var app = new Vue({
   el: '#app',
   data: {

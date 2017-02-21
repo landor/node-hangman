@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var watch = require('gulp-watch');
 var browserSync = require('browser-sync').create();
@@ -10,20 +9,7 @@ var paths = {
     node_server: 'node-server/',
 };
 
-gulp.task('js', ['templates'], function() {
-    var all_files = [
-        // paths.something + 'something.js',
-        // paths.something + 'js/src/**/*.js',
-    ];
-    
-    return gulp.src(all_files)
-        .pipe(concat('dest.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.something + 'js/'));
-});
-
 gulp.task('watch', function() {
-    // gulp.watch('js/src/**/*.js', ['js']);
     gulp.watch(paths.node_server + "*.scss", ['sass']);
 });
 

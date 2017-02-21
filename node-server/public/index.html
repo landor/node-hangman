@@ -3,7 +3,6 @@
     <title>hangman</title>
     <script src="/js/vue.js"></script>
     <script src="/js/axios.js"></script>
-    <link href="/css/basscss.min.css" rel="stylesheet">
     <link href="/css/hangman.css" rel="stylesheet">
   </head>
   <body>
@@ -13,7 +12,6 @@
       <div class="dashboard" v-if="mode == 'dashboard' || mode == 'game'">
         <div class="stats">
           <p><span class="wins">wins: {{ game.wins }}</span> <span class="losses">losses: {{ game.losses }}</span></p>
-          <!-- <p>game: {{game}}</p> -->
         </div>
         <p>
           <button v-on:click="newGame">Start New Game</button>
