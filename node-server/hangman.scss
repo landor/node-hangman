@@ -1,0 +1,204 @@
+$base-color: #000;
+$base-color-lighter: lighten($base-color, 95%);
+$text-green: #0a0;
+$text-red: #a00;
+
+[v-cloak] {
+  display: none;
+}
+button {
+  font-size: 16px;
+  border: 2px solid $base-color;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: $base-color-lighter;
+  cursor: pointer;
+  &:hover {
+    background: lighten($base-color, 90%);
+  }
+}
+
+.dashboard {
+  margin: 10px;
+  text-align: center;
+  .wins, .losses {
+    font-size: 18px;
+    display: inline-block;
+    padding: 0 10px;
+  }
+  .cta {
+    font-size: 20px;
+    margin-top: 30px;
+  }
+}
+
+.game {
+  height: 70vh;
+  position: relative;
+  .gallows {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    svg {
+      height: 100%;
+      width: auto;
+    }
+  }
+  .word-area {
+    position: absolute;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    .word-area-inner {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      & > * {
+        margin-top: 40px;
+      }
+      & > :first-child {
+        margin-top: 0;
+      }
+    }
+    
+    .word {
+      font-size: 20px;
+      font-family: mono;
+      letter-spacing: 1em;
+    }
+    .word-revealed {
+      span {
+        padding-top: .2em;
+        display: block;
+        font-size: 20px;
+        font-family: mono;
+        letter-spacing: 1em;
+      }
+    }
+    .make-guess {
+      input {
+        padding: 5px 10px;
+        min-width: 20em;
+        text-align: center;
+        border: 1px solid #aaa;
+        outline: none;
+        &:focus {
+          outline: none;
+          border: 1px solid #333;
+        }
+      }
+      &.input-blocked {
+        background: url('/img/loading.gif') center center no-repeat;
+        input {
+          opacity: 0;
+        }
+      }
+    }
+    .you-won {
+      font-size: 18px;
+      color: $text-green;
+    }
+    .you-lost {
+      font-size: 18px;
+      color: $text-red;
+    }
+    .guesses-letters {
+      font-size: 16px;
+      span {
+        padding-left: 10px;
+        font-family: mono;
+        letter-spacing: .8em;
+        &.right_guesses {
+          color: $text-green;
+        }
+        &.wrong_guesses {
+          color: $text-red;
+        }
+      }
+    }
+  }
+}
+
+.game:not(.won) {
+  &.guesses-left-10 {
+    [id^='step'] {
+      visibility: hidden;
+    }
+  }
+  &.guesses-left-9 {
+    @extend .game:not(.won).guesses-left-10;
+    #step1 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-8 {
+    @extend .game:not(.won).guesses-left-9;
+    #step2 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-7 {
+    @extend .game:not(.won).guesses-left-8;
+    #step3 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-6 {
+    @extend .game:not(.won).guesses-left-7;
+    #step4 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-5 {
+    @extend .game:not(.won).guesses-left-6;
+    #step5 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-4 {
+    @extend .game:not(.won).guesses-left-5;
+    #step6 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-3 {
+    @extend .game:not(.won).guesses-left-4;
+    #step7 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-2 {
+    @extend .game:not(.won).guesses-left-3;
+    #step8 {
+      visibility: visible;
+    }
+  }
+  &.guesses-left-1 {
+    @extend .game:not(.won).guesses-left-2;
+    #step9 {
+      visibility: visible;
+    }
+  }
+  .gallows #swinger {
+    @keyframes ropeswing {
+      0% {
+        transform: rotate(.75deg);
+      }
+      50% {
+        transform: rotate(-.75deg);
+      }
+      100% {
+        transform: rotate(.75deg);
+      }
+    }
+    transform-origin: 50% 0%;
+    animation: ropeswing 4s infinite linear;
+  }
+}
+.game.won .gallows #hangman-body {
+  transform: translateY(20%);
+}

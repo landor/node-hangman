@@ -6,6 +6,11 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.14.1",
-    "mongoose": "^4.8.2"
+    "morgan": "^1.8.1",
+    "mongoose": "^4.8.2",
+    "body-parser": "^1.16.1",
+    "crypto": "^0.0.3",
+    "bluebird": "^3.4.7",
+    "random-word": "^2.0.0"
   }
 }

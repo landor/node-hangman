@@ -1,0 +1,172 @@
+<html>
+  <head>
+    <title>hangman</title>
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.js"></script>
+    <link href="/css/basscss.min.css" rel="stylesheet">
+    <link href="/css/hangman.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <div class="messages">
+      </div>
+      <div class="dashboard" v-if="mode == 'dashboard' || mode == 'game'">
+        <div class="stats">
+          <p><span class="wins">wins: {{ game.wins }}</span> <span class="losses">losses: {{ game.losses }}</span></p>
+          <!-- <p>game: {{game}}</p> -->
+        </div>
+        <p>
+          <button v-on:click="newGame">Start New Game</button>
+          <button v-on:click="newSession">Start New Session</button>
+        </p>
+        <p class="cta" v-show="mode == 'dashboard'">Click "Start New Game" to play!</p>
+      </div>
+      <div class="game" :class="['guesses-left-' + game.wrong_guesses_left, {won: game.isWon}]" v-on:click="gameClick()">
+        <div class="gallows">
+          <svg v-if="svg_show"
+             xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:cc="http://creativecommons.org/ns#"
+             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:svg="http://www.w3.org/2000/svg"
+             xmlns="http://www.w3.org/2000/svg"
+             xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+             xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+             width="210mm"
+             height="297mm"
+             viewBox="0 0 744.09448819 1052.3622047"
+             id="svg2"
+             version="1.1"
+             inkscape:version="0.91 r13725"
+             sodipodi:docname="drawing.svg">
+            <defs
+               id="defs4" />
+            <sodipodi:namedview
+               id="base"
+               pagecolor="#ffffff"
+               bordercolor="#666666"
+               borderopacity="1.0"
+               inkscape:pageopacity="0.0"
+               inkscape:pageshadow="2"
+               inkscape:zoom="0.40915493"
+               inkscape:cx="-37.49448"
+               inkscape:cy="506.14799"
+               inkscape:document-units="px"
+               inkscape:current-layer="swinger"
+               showgrid="false"
+               inkscape:window-width="1280"
+               inkscape:window-height="948"
+               inkscape:window-x="1280"
+               inkscape:window-y="25"
+               inkscape:window-maximized="1" />
+            <metadata
+               id="metadata7">
+              <rdf:RDF>
+                <cc:Work
+                   rdf:about="">
+                  <dc:format>image/svg+xml</dc:format>
+                  <dc:type
+                     rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+                  <dc:title />
+                </cc:Work>
+              </rdf:RDF>
+            </metadata>
+            <g
+               inkscape:label="Layer 1"
+               inkscape:groupmode="layer"
+               id="layer1">
+              <rect
+                 style="fill:none;stroke:#000000;stroke-width:1.87805593"
+                 id="step1"
+                 width="402.44055"
+                 height="150.24446"
+                 x="314.67636"
+                 y="765.33392"
+                 inkscape:label="#rect3338" />
+              <path
+                 style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87805593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                 d="m 518.57957,765.3339 0,-676.100102"
+                 id="step2"
+                 inkscape:connector-curvature="0"
+                 inkscape:label="#path3340" />
+              <path
+                 style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.20490432px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                 d="m 133.23872,87.455957 384.5974,0"
+                 id="step3"
+                 inkscape:connector-curvature="0"
+                 inkscape:label="#path3342" />
+              <g
+                 id="swinger"
+                 inkscape:label="#g3343">
+                <path
+                   inkscape:label="#path3344"
+                   inkscape:connector-curvature="0"
+                   id="step4"
+                   d="m 133.82054,88.289919 0,144.878591"
+                   style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87805593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+                <g
+                   id="hangman-body"
+                   inkscape:label="#g3344">
+                  <circle
+                     style="fill:none;stroke:#000000;stroke-width:1.87805593"
+                     id="step5"
+                     cx="132.1785"
+                     cy="294.49463"
+                     r="59.024612"
+                     inkscape:label="#path3346" />
+                  <path
+                     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87805593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                     d="m 129.68302,356.59006 0,321.95244"
+                     id="step6"
+                     inkscape:connector-curvature="0"
+                     inkscape:label="#path3348" />
+                  <path
+                     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87805593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                     d="M 126.51523,674.7282 88.954089,803.50917"
+                     id="step9"
+                     inkscape:connector-curvature="0"
+                     inkscape:label="#path3350" />
+                  <path
+                     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87805593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                     d="m 132.13968,674.7282 48.29287,134.14686"
+                     id="step10"
+                     inkscape:connector-curvature="0"
+                     inkscape:label="#path3352" />
+                  <path
+                     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87805593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                     d="M 130.52346,421.7887 253.93855,405.69106"
+                     id="step8"
+                     inkscape:connector-curvature="0"
+                     inkscape:label="#path3354" />
+                  <path
+                     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87805593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                     d="M 126.51523,423.34025 8.4659872,375.04739"
+                     id="step7"
+                     inkscape:connector-curvature="0"
+                     inkscape:label="#path3356" />
+                </g>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="word-area" v-show="mode == 'game'">
+          <div class="word-area-inner">
+            <div class="word">{{ game.guessed_word }}</div>
+            <div class="you-won" v-show="game.isWon">You won!</div>
+            <div class="you-lost" v-show="game.isLost">You lost!</div>
+            <div class="word-revealed" v-show="game.revealed_word">The word was:<span>{{ game.revealed_word }}</span></div>
+            <div class="make-guess" v-bind:class="{ 'input-blocked': input_blocked }" v-show="! game.isWon && ! game.isLost">
+              <input ref="guess_input" v-model="guess" v-on:keyup="playGuess()" maxlength="1" placeholder="Type a letter here to make a guess!" />
+            </div>
+            <div class="guesses-letters">
+              guessed letters: 
+              <span class="wrong_guesses" v-show="game.wrong_guesses">{{ game.wrong_guesses }}</span>
+              <span class="right_guesses" v-show="game.right_guesses">{{ game.right_guesses }}</span>
+            </div>
+            <div class="guesses-count" v-show="game.wrong_guesses_left > 0"><span>{{ game.wrong_guesses_left }}</span> more guesses</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js/vue-app.js"></script>
+  </body>
+</html>
