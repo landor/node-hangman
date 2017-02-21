@@ -10,12 +10,15 @@ var app = new Vue({
   },
   methods: {
     newSession: function() {
+      localStorage.auth_token = '';
+      this.auth_token = '';
+      axios.defaults.headers.common['auth_token'] = '';
+      this.updateGameState();
+      this.initAuth();
+    },
+    newSessionClick: function() {
       if (confirm('This will clear your win/loss record. Are you sure?')) {
-        localStorage.auth_token = '';
-        this.auth_token = '';
-        axios.defaults.headers.common['auth_token'] = '';
-        this.updateGameState();
-        this.initAuth();
+        this.newSession();
       }
     },
     initAuth: function() {
