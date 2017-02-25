@@ -6,6 +6,7 @@ var app = new Vue({
     game: {},
     guess: '',
     input_blocked: false,
+    input_focused: false,
     svg_show: false,
   },
   methods: {
@@ -92,11 +93,14 @@ var app = new Vue({
 
         // show svg
         this.svg_show = true;
+
+        // focus input
+        var t = this;
+        setTimeout(function(){
+          t.$refs.guess_input.focus();
+        }, 0);
       }
       this.mode = new_mode;
-    },
-    gameClick: function() {
-      this.$refs.guess_input.focus();
     },
     playGuess: function() {
       if (this.input_blocked) {
@@ -123,7 +127,16 @@ var app = new Vue({
 
       // play guessed letter
       this.playGame({ op: 'guess letter', letter: guess });
-    }
+    },
+    gameClick: function() {
+      this.$refs.guess_input.focus();
+    },
+    inputFocused: function() {
+      this.input_focused = true;
+    },
+    inputBlurred: function() {
+      this.input_focused = false;
+    },
   },
   created: function() {
     // set up session with server

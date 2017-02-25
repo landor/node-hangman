@@ -152,8 +152,11 @@
             <div class="you-won" v-show="game.isWon">You won!</div>
             <div class="you-lost" v-show="game.isLost">You lost!</div>
             <div class="word-revealed" v-show="game.revealed_word">The word was:<span>{{ game.revealed_word }}</span></div>
-            <div class="make-guess" v-bind:class="{ 'input-blocked': input_blocked }" v-show="! game.isWon && ! game.isLost">
-              <input ref="guess_input" v-model="guess" v-on:keyup="playGuess()" maxlength="1" placeholder="Type a letter here to make a guess!" />
+            <div class="make-guess" v-bind:class="{ 'input-blocked': input_blocked, 'input-focused': input_focused }" v-show="! game.isWon && ! game.isLost">
+              <div class="directions">
+                <span v-show="! input_focused">Click here and t</span><span v-show="input_focused">T</span>ype a letter to make a guess!
+              </div>
+              <input ref="guess_input" v-model="guess" v-on:keyup="playGuess()" v-on:focus="inputFocused()" v-on:blur="inputBlurred()" maxlength="1" />
             </div>
             <div class="guesses-letters">
               guessed letters:

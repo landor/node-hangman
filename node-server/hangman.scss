@@ -2,15 +2,17 @@ $base-color: #000;
 $base-color-lighter: lighten($base-color, 95%);
 $text-green: #0a0;
 $text-red: #a00;
+$input-border-radius: 5px;
+$input-border-width: 2px;
 
 [v-cloak] {
   display: none;
 }
 button {
   font-size: 16px;
-  border: 2px solid $base-color;
+  border: $input-border-width solid $base-color;
   padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: $input-border-radius;
   background: $base-color-lighter;
   cursor: pointer;
   &:hover {
@@ -80,20 +82,39 @@ button {
       }
     }
     .make-guess {
+      position: relative;
+      .directions {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translatey(-50%);
+        border: $input-border-width solid #aaa;
+        border-radius: $input-border-radius;
+        font-size: 16px;
+        padding: 10px 10px;
+        min-width: 20em;
+        background-color: #fee;
+      }
+      &.input-focused .directions {
+        background-color: #fff;
+      }
       input {
-        padding: 5px 10px;
+        font-size: 16px;
+        padding: 10px 10px;
         min-width: 20em;
         text-align: center;
-        border: 1px solid #aaa;
+        border: $input-border-width solid #aaa;
+        border-radius: $input-border-radius;
         outline: none;
         &:focus {
           outline: none;
-          border: 1px solid #333;
+          border-color: #333;
         }
+        opacity: 0;
       }
       &.input-blocked {
         background: url('/img/loading.gif') center center no-repeat;
-        input {
+        .directions {
           opacity: 0;
         }
       }
