@@ -156,7 +156,7 @@
               <input ref="guess_input" v-model="guess" v-on:keyup="playGuess()" maxlength="1" placeholder="Type a letter here to make a guess!" />
             </div>
             <div class="guesses-letters">
-              guessed letters: 
+              guessed letters:
               <span class="wrong_guesses" v-show="game.wrong_guesses">{{ game.wrong_guesses }}</span>
               <span class="right_guesses" v-show="game.right_guesses">{{ game.right_guesses }}</span>
             </div>

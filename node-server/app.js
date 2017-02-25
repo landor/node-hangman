@@ -33,14 +33,14 @@ gameSchema.methods.newGame = function(cb) {
     // new game while a game is underway counts as a loss
     this.losses++;
   }
-  
+
   // pick a new word
   this.word = randomWord();
-  
+
   // reset guesses
   this.wrong_guesses = '';
   this.right_guesses = '';
-  
+
   this.save(function(err){
     if (err) {
       console.log('error creating game', err)
@@ -55,7 +55,7 @@ gameSchema.methods.guessLetter = function(letter, cb) {
     cb();
     return;
   }
-  
+
   // validate guess
   letter = letter.charAt(0).toLowerCase();
   // a-z only
@@ -67,7 +67,7 @@ gameSchema.methods.guessLetter = function(letter, cb) {
     cb();
     return;
   }
-  
+
   // add guess
   if (this.word.indexOf(letter) >= 0) {
     // correct guess
@@ -78,17 +78,17 @@ gameSchema.methods.guessLetter = function(letter, cb) {
     this.wrong_guesses += letter;
     this.wrong_guesses = sortString(this.wrong_guesses);
   }
-  
+
   // detect and increment loss
   if (this.isGameLost()) {
     this.losses++;
   }
-  
+
   // detect and increment win
   if (this.isGameWon()) {
     this.wins++;
   }
-  
+
   this.save(function(err){
     if (err) {
       console.log('error saving game', err)
@@ -100,34 +100,34 @@ gameSchema.methods.guessLetter = function(letter, cb) {
 gameSchema.methods.isGameActive = function() {
   // word must exist
   var active = this.word.length;
-  
+
   // wrong guesses count must be less than max
   active = active && this.wrong_guesses.length < max_wrong_guesses;
-  
+
   return active;
 }
 gameSchema.methods.isGameLost = function() {
   // word must exist
   var lost = this.word.length;
-  
+
   // wrong guesses count must be at max
   lost = lost && this.wrong_guesses.length == max_wrong_guesses;
-  
+
   return lost;
 }
 gameSchema.methods.isGameWon = function() {
   // word must exist
   var won = this.word.length;
-  
+
   // wrong guesses count must be less than max
   won = won && this.wrong_guesses.length < max_wrong_guesses;
-  
+
   // all letters in word must be guessed
   won = won && this.right_guesses.length > 0;
   for (var i = 0; won && i < this.word.length; i++ ) {
     won = this.right_guesses.indexOf(this.word.charAt(i)) >= 0;
   }
-  
+
   return won;
 }
 gameSchema.methods.fillWordWithGuesses = function() {
@@ -143,7 +143,7 @@ gameSchema.methods.fillWordWithGuesses = function() {
       ret += '_';
     }
   }
-  
+
   return ret;
 }
 var GameModel = mongoose.model('Game', gameSchema);
@@ -171,7 +171,7 @@ app.post('/get-auth-token', function(req, res, next) {
             console.log('error creating game', err)
           }
         });
-        
+
         // return new auth token
         res.json({ auth_token: auth_token });
       } else {
@@ -190,7 +190,7 @@ app.post('/play-game', function(req, res, next) {
       res.json({ error: 'no game' });
       return;
     }
-  
+
     // perform game operation / mutate game
     switch(req.body.op) {
       case 'new game':
@@ -207,12 +207,12 @@ app.post('/play-game', function(req, res, next) {
       default:
         returnGame(game);
     }
-  
+
   });
-  
+
   // return game state
   function returnGame(game) {
-    
+
     // only reveal certain information to the client
     var res_game = {
       // mangled word showing guesses filled in
@@ -228,15 +228,15 @@ app.post('/play-game', function(req, res, next) {
       isWon: game.isGameWon(),
       isLost: game.isGameLost(),
     };
-    
+
     // reveal word when game is lost
     if (game.isGameLost()) {
       res_game.revealed_word = game.word;
     }
-    
+
     res.json({ game: res_game });
   }
-  
+
 });
 
 app.listen(3000, function(){

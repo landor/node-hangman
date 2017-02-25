@@ -25,7 +25,7 @@ var app = new Vue({
       if (localStorage.auth_token) {
         // auth token is stored, continue with session
         this.auth_token = localStorage.auth_token;
-        
+
         // continue to next phase
         this.initAuthSuccess();
       } else {
@@ -36,7 +36,7 @@ var app = new Vue({
           t.auth_token = res.data.auth_token;
           // store auth token to persist session
           localStorage.auth_token = t.auth_token;
-          
+
           // continue to next phase
           t.initAuthSuccess();
         })
@@ -47,13 +47,13 @@ var app = new Vue({
     },
     initAuthSuccess: function() {
       axios.defaults.headers.common['auth_token'] = this.auth_token;
-      
+
       this.playGame();
     },
     playGame: function(op) {
       // play game will return the game or inform that auth is bad
       // if auth is bad, get a new session
-      
+
       var t = this;
       axios.post('/play-game', op)
       .then(function (res) {
@@ -62,10 +62,10 @@ var app = new Vue({
           t.newSession();
           return;
         }
-        
+
         // store new game data
         t.game = res.data.game;
-        
+
         // update game state
         t.updateGameState();
       })
@@ -86,10 +86,10 @@ var app = new Vue({
         new_mode = 'dashboard';
       } else {
         new_mode = 'game';
-        
+
         // stop blocking input
         this.input_blocked = false;
-      
+
         // show svg
         this.svg_show = true;
       }
@@ -105,22 +105,22 @@ var app = new Vue({
       }
       // start blocking input
       this.input_blocked = true;
-      
+
       var guess = this.guess.charAt(0).toLowerCase();
       this.guess = '';
-      
+
       // validate
       // a-z only
       var valid = /[a-z]/.test(guess);
       // don't take already guessed letters
       valid = valid && this.game.wrong_guesses.indexOf(guess) < 0;
       valid = valid && this.game.right_guesses.indexOf(guess) < 0;
-      
+
       if (! valid) {
         this.input_blocked = false;
         return;
       }
-      
+
       // play guessed letter
       this.playGame({ op: 'guess letter', letter: guess });
     }
