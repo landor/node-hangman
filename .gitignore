@@ -1,4 +1,4 @@
 /docker-runtime
 node-server/public/css/hangman.css
 node-server/public/css/hangman.css.map
-/node_modules
+node_modules/
