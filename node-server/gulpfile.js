@@ -6,7 +6,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 
 var paths = {
-    node_server: 'node-server/',
+    node_server: './',
 };
 
 gulp.task('watch', function() {
@@ -19,7 +19,7 @@ gulp.task('build', ['sass']);
 
 gulp.task('browser-sync', function() {
     browserSync.init({
-        proxy: "http://127.0.0.1:3000/",
+        proxy: "http://localhost:3000/",
         open: false,
         port: 3500,
     });
