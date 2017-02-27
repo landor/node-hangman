@@ -9,7 +9,6 @@ cd node-hangman/node-server
 
 ### If you do not already have Mongo running locally, you can use the docker instance included here:
 ```
-docker-compose build
 docker-compose up -d
 ```
 
