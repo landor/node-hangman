@@ -60,23 +60,25 @@ app.post('/play-game', function(req, res, next) {
   GameModel.findOne({ auth_token: req.get('auth_token') }, function (err, game) {
     if (! game) {
       // auth token doesn't match a game
-      res.json({ error: 'no game' });
+      returnError('no game');
       return;
     }
 
     // perform game operation / mutate game
     switch(req.body.op) {
       case 'new game':
-        game.newGame().then(function(){
+        game.newGame().then(function() {
           returnGame(game);
-        }, function(err){
+        }, function(err) {
           returnError(err);
         });
         break;
       case 'guess letter':
         // user is guessing a letter
-        game.guessLetter(req.body.letter, function(){
+        game.guessLetter(req.body.letter).then(function(){
           returnGame(game);
+        }, function(err) {
+          returnError(err);
         });
         break;
       default:

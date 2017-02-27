@@ -38,52 +38,59 @@ gameSchema.methods.newGame = function() {
     });
   });
 }
-gameSchema.methods.guessLetter = function(letter, cb) {
-  // establish that game is active and not won or lost
-  if (! this.isGameActive() || this.isGameWon() || this.isGameLost()) {
-    cb();
-    return;
-  }
-
-  // validate guess
-  letter = letter.charAt(0).toLowerCase();
-  // a-z only
-  var valid = /[a-z]/.test(letter);
-  // don't take already guessed letters
-  valid = valid && this.wrong_guesses.indexOf(letter) < 0;
-  valid = valid && this.right_guesses.indexOf(letter) < 0;
-  if (! valid) {
-    cb();
-    return;
-  }
-
-  // add guess
-  if (this.word.indexOf(letter) >= 0) {
-    // correct guess
-    this.right_guesses += letter;
-    this.right_guesses = sortString(this.right_guesses);
-  } else {
-    // incorrect guess
-    this.wrong_guesses += letter;
-    this.wrong_guesses = sortString(this.wrong_guesses);
-  }
-
-  // detect and increment loss
-  if (this.isGameLost()) {
-    this.losses++;
-  }
-
-  // detect and increment win
-  if (this.isGameWon()) {
-    this.wins++;
-  }
-
-  this.save(function(err){
-    if (err) {
-      console.log('error saving game', err)
-    } else {
-      cb();
+gameSchema.methods.guessLetter = function(letter) {
+  var t = this;
+  return new Promise(function(resolve, reject) {
+    // establish that game is active and not won or lost
+    if (! t.isGameActive() || t.isGameWon() || t.isGameLost()) {
+      reject(Error('can not make guesses in current state'));
+      return;
     }
+
+    // validate guess
+    if (letter == undefined || ! letter.length) {
+      reject(Error('invalid guess'));
+      return;
+    }
+    letter = letter.charAt(0).toLowerCase();
+    // a-z only
+    var valid = /[a-z]/.test(letter);
+    // don't take already guessed letters
+    valid = valid && t.wrong_guesses.indexOf(letter) < 0;
+    valid = valid && t.right_guesses.indexOf(letter) < 0;
+    if (! valid) {
+      reject(Error('invalid guess'));
+      return;
+    }
+
+    // add guess
+    if (t.word.indexOf(letter) >= 0) {
+      // correct guess
+      t.right_guesses += letter;
+      t.right_guesses = sortString(t.right_guesses);
+    } else {
+      // incorrect guess
+      t.wrong_guesses += letter;
+      t.wrong_guesses = sortString(t.wrong_guesses);
+    }
+
+    // detect and increment loss
+    if (t.isGameLost()) {
+      t.losses++;
+    }
+
+    // detect and increment win
+    if (t.isGameWon()) {
+      t.wins++;
+    }
+
+    t.save(function(err){
+      if (err) {
+        reject(err)
+      } else {
+        resolve();
+      }
+    });
   });
 }
 gameSchema.methods.isGameActive = function() {
